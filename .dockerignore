@@ -1,0 +1,9 @@
+.git/
+.gitignore
+.gitattributes
+openspec/
+docs/
+node_modules/
+dist/
+.env
+*.md
