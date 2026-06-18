@@ -3,45 +3,198 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ciber-sim — Simulación de Ciberseguridad</title>
+  <title>Campus Norte — Portal estudiantil</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=IBM+Plex+Mono:wght@500;600&family=Newsreader:opsz,wght@6..72,500;6..72,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/navigation.css">
+  <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-  <main>
-    <!-- Login Screen -->
-    <section id="login-screen">
-      <h1>ciber-sim</h1>
-      <p>Portal académico — Simulación educativa de ciberseguridad</p>
-      <form id="login-form" autocomplete="off">
-        <label for="email">Correo electrónico</label>
-        <input type="email" id="email" name="email" required autocomplete="off">
+  <div id="portal-shell" class="portal-shell logged-out">
+    <aside class="portal-rail" hidden>
+      <div class="brand">
+        <span class="brand__mark" aria-hidden="true">CN</span>
+        <span>
+          <strong>Campus Norte</strong>
+          <small>Portal estudiantil</small>
+        </span>
+      </div>
 
-        <label for="password">Contraseña</label>
-        <input type="password" id="password" name="password" required autocomplete="off">
+      <nav class="rail-nav" aria-label="Secciones principales">
+        <button type="button" data-target="home" aria-current="page">Inicio</button>
+        <button type="button" data-target="courses">Cursos</button>
+        <button type="button" data-target="grades">Calificaciones</button>
+        <button type="button" data-target="profile">Perfil</button>
+      </nav>
 
-        <button type="submit">Ingresar</button>
-        <p id="login-error" class="error" aria-live="polite"></p>
-      </form>
-    </section>
+      <section class="rail-note" aria-label="Soporte estudiantil">
+        <p class="eyebrow">Soporte</p>
+        <p>Consulta tus cursos, secciones, calificaciones y datos de perfil desde un solo lugar.</p>
+      </section>
+    </aside>
 
-    <!-- Student Panel Shell -->
-    <section id="student-panel" class="panel" hidden>
-      <h2>Panel de Estudiante</h2>
-      <p>Bienvenido, <span id="student-name"></span></p>
-      <p><em>Panel de estudiante — contenido próximo (calificaciones, perfil).</em></p>
-      <button id="logout-btn">Cerrar sesión</button>
-    </section>
+    <main class="portal-main">
+      <header class="portal-topbar" hidden>
+        <p>Calendario</p>
+        <p>Servicios estudiantiles</p>
+        <p>Biblioteca</p>
+        <strong>Periodo 2026-1</strong>
+      </header>
 
-    <!-- Teacher Panel Shell -->
-    <section id="teacher-panel" class="panel" hidden>
-      <h2>Panel de Profesor</h2>
-      <p>Bienvenido, <span id="teacher-name"></span></p>
-      <p><em>Panel de profesor — contenido próximo (gestión de calificaciones, secciones).</em></p>
-      <button id="logout-btn-teacher">Cerrar sesión</button>
-    </section>
-  </main>
+      <!-- Login Screen -->
+      <section id="login-screen" class="login-screen">
+        <div class="login-copy">
+          <p class="eyebrow">Portal académico</p>
+          <h1>Consulta tus cursos y calificaciones.</h1>
+          <p>Accede a tu panel estudiantil para revisar tu perfil, cursos actuales, secciones inscritas y notas disponibles.</p>
+        </div>
+
+        <form id="login-form" class="login-card" autocomplete="off">
+          <p class="card-kicker">Acceso al portal</p>
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" required autocomplete="off" placeholder="student@example.com">
+
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required autocomplete="off" placeholder="password123">
+
+          <button type="submit">Entrar al panel</button>
+          <p id="login-error" class="error" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <!-- Student Panel -->
+      <section id="student-panel" class="student-dashboard panel" hidden>
+        <header class="dashboard-header">
+          <div>
+            <p class="eyebrow">Portal estudiantil</p>
+            <h2>Panel de estudiante</h2>
+            <p id="dashboard-subtitle">Resumen académico del periodo actual.</p>
+          </div>
+          <button id="logout-btn" class="button-secondary">Cerrar sesión</button>
+        </header>
+
+        <!-- View: Inicio -->
+        <div class="view" data-view="home">
+          <div class="dashboard-grid">
+            <article class="card summary-card" aria-labelledby="summary-title">
+              <p class="card-kicker">Inicio</p>
+              <h3 id="summary-title">Resumen del periodo</h3>
+              <dl class="summary-list">
+                <div>
+                  <dt>Cursos activos</dt>
+                  <dd>0</dd>
+                </div>
+                <div>
+                  <dt>Secciones inscritas</dt>
+                  <dd>0</dd>
+                </div>
+                <div>
+                  <dt>Calificaciones publicadas</dt>
+                  <dd>0</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="card calendar-card" aria-labelledby="calendar-title">
+              <p class="card-kicker">Mi calendario</p>
+              <h3 id="calendar-title">Próximos eventos</h3>
+              <ol class="mini-schedule">
+                <li><time datetime="2026-07-06">6 jul</time><span>Inicio del periodo académico</span></li>
+                <li><time datetime="2026-07-12">12 jul</time><span>Cierre de inscripción de secciones</span></li>
+                <li><time datetime="2026-07-18">18 jul</time><span>Publicación de primeras calificaciones</span></li>
+              </ol>
+            </article>
+          </div>
+        </div>
+
+        <!-- View: Cursos -->
+        <div class="view" data-view="courses" hidden>
+          <div class="dashboard-grid dashboard-grid--single">
+            <article class="card wide-card" aria-labelledby="courses-title">
+              <p class="card-kicker">Cursos inscritos</p>
+              <h3 id="courses-title">No hay cursos inscritos</h3>
+              <div class="empty-state">
+                <p>Cuando tengas cursos activos, aparecerán aquí con su sección, profesor y horario.</p>
+              </div>
+            </article>
+
+            <article class="card wide-card" aria-labelledby="sections-title">
+              <p class="card-kicker">Secciones</p>
+              <h3 id="sections-title">Sin secciones asignadas</h3>
+              <div class="empty-state compact">
+                <p>Las secciones inscritas se mostrarán cuando exista información académica disponible.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <!-- View: Calificaciones -->
+        <div class="view" data-view="grades" hidden>
+          <article class="card wide-card" aria-labelledby="grades-title">
+            <p class="card-kicker">Calificaciones</p>
+            <h3 id="grades-title">No hay calificaciones publicadas</h3>
+            <div class="grades-table" role="table" aria-label="Calificaciones del estudiante">
+              <div role="row" class="grades-table__head">
+                <span role="columnheader">Curso</span>
+                <span role="columnheader">Sección</span>
+                <span role="columnheader">Calificación</span>
+              </div>
+              <div role="row" class="grades-table__empty">
+                <span role="cell">Aún no hay registros para mostrar.</span>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <!-- View: Perfil -->
+        <div class="view" data-view="profile" hidden>
+          <section id="student-profile" class="profile-section" aria-labelledby="student-profile-title">
+            <article class="card profile-card">
+              <p class="card-kicker">Perfil</p>
+              <h3 id="student-profile-title"><span id="student-name"></span></h3>
+              <p class="profile-card__status">Estudiante activo</p>
+              <dl class="profile-details">
+                <div>
+                  <dt>Identificador</dt>
+                  <dd id="student-id"></dd>
+                </div>
+                <div>
+                  <dt>Nombre completo</dt>
+                  <dd id="student-name-display"></dd>
+                </div>
+                <div>
+                  <dt>Rol</dt>
+                  <dd id="student-role"></dd>
+                </div>
+              </dl>
+            </article>
+          </section>
+        </div>
+      </section>
+
+      <!-- Teacher Panel -->
+      <section id="teacher-panel" class="teacher-dashboard panel" hidden>
+        <header class="dashboard-header">
+          <div>
+            <p class="eyebrow">Portal docente</p>
+            <h2>Panel de profesor</h2>
+            <p>Bienvenido, <span id="teacher-name"></span>. Las herramientas de gestión académica se añadirán en una fase posterior.</p>
+          </div>
+          <button id="logout-btn-teacher" class="button-secondary">Cerrar sesión</button>
+        </header>
+
+        <article class="card wide-card">
+          <p class="card-kicker">Estado</p>
+          <h3>Panel reservado</h3>
+          <p>Las secciones y cursos asignados al profesor aparecerán cuando estén disponibles.</p>
+        </article>
+      </section>
+    </main>
+  </div>
   <script type="module" src="js/app.js"></script>
 </body>
 </html>
