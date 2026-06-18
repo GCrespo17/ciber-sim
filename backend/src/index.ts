@@ -4,6 +4,7 @@ import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import authRouter from './routes/auth.js';
+import usersRouter from './routes/users.js';
 import { logger } from './lib/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(express.static(frontendDir));
 
 app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));

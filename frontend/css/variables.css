@@ -1,11 +1,24 @@
 :root {
-  --color-primary: #c0392b;
-  --color-primary-hover: #a93226;
-  --color-bg: #fafafa;
-  --color-text: #1a1a1a;
-  --color-muted: #555;
-  --color-border: #ccc;
-  --color-error: #c0392b;
-  --radius: 6px;
-  --gap: 1rem;
+  --ink: #18233a;
+  --rail: #111a2e;
+  --paper: #eef1ec;
+  --surface: #fbfaf5;
+  --line: #d8dbd0;
+  --muted: #687181;
+  --amber: #ffb84d;
+  --teal: #2cb7a7;
+  --rose: #d85c68;
+  --shadow: 0 1.5rem 4rem rgb(17 26 46 / 16%);
+  --radius-sm: 0.45rem;
+  --radius-md: 0.9rem;
+  --radius-lg: 1.35rem;
+  --space-1: 0.35rem;
+  --space-2: 0.65rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: clamp(2.5rem, 6vw, 5.5rem);
+  --font-display: 'Newsreader', ui-serif, Georgia, serif;
+  --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif;
+  --font-data: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
 }
