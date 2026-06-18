@@ -31,11 +31,6 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
-app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
-  logger.error('server.unhandled_error', { message: err.message });
-  res.status(500).json({ error: 'Internal server error.' });
-});
-
 app.listen(PORT, () => {
   logger.info('server.startup', { port: PORT, frontendDir });
 });

@@ -93,6 +93,34 @@ button:active {
   box-shadow: 0 0.7rem 1.4rem rgb(24 35 58 / 12%);
 }
 
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper input {
+  padding-right: 3rem;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  min-height: unset;
+  margin-top: 0;
+  padding: 0.4rem;
+  background: transparent;
+  color: var(--muted);
+  border-radius: var(--radius-sm);
+}
+
+.toggle-password:hover,
+.toggle-password:focus-visible {
+  background: rgb(44 183 167 / 10%);
+  box-shadow: none;
+  color: var(--teal);
+}
+
 .error {
   min-height: 1.4em;
   margin: var(--space-2) 0 0;

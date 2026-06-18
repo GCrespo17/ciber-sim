@@ -1,5 +1,5 @@
-import { login, getProfile, logout as apiLogout } from './api.js';
-import { showLogin, showPanel, showView, setLoginError, getFormValues } from './ui.js';
+import { login, getProfile, getGrades, logout as apiLogout } from './api.js';
+import { showLogin, showPanel, showView, setLoginError, getFormValues, renderGrades } from './ui.js';
 
 document.getElementById('login-form').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -11,7 +11,9 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     const user = await login(email, password);
     if (user.role === 'student') {
       const profile = await getProfile(user.id);
+      const gradesList = await getGrades(user.id);
       showPanel(profile);
+      renderGrades(gradesList);
     } else {
       showPanel(user);
     }
@@ -35,6 +37,16 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
 document.getElementById('logout-btn-teacher').addEventListener('click', async () => {
   await apiLogout();
   showLogin();
+});
+
+document.getElementById('toggle-password').addEventListener('click', () => {
+  const input = document.getElementById('password');
+  const eyeOn = document.getElementById('eye-icon');
+  const eyeOff = document.getElementById('eye-off-icon');
+  const isHidden = input.type === 'password';
+  input.type = isHidden ? 'text' : 'password';
+  eyeOn.hidden = isHidden;
+  eyeOff.hidden = !isHidden;
 });
 
 showLogin();

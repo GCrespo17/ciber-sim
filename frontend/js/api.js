@@ -23,3 +23,12 @@ export async function getProfile(userId) {
   }
   return data;
 }
+
+export async function getGrades(userId) {
+  const res = await fetch(`/api/users/${userId}/grades`);
+  const data = await res.json();
+  if (!res.ok) {
+    throw new Error(data.error || 'Failed to fetch grades.');
+  }
+  return data;
+}

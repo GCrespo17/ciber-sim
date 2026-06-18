@@ -83,6 +83,27 @@ export function showPanel(user) {
   }
 }
 
+export function renderGrades(gradesList) {
+  const table = document.querySelector('[data-view="grades"] .grades-table');
+  if (!table) return;
+
+  const existing = table.querySelectorAll('[role="row"]:not(.grades-table__head)');
+  existing.forEach((r) => r.remove());
+
+  if (gradesList.length === 0) return;
+
+  for (const g of gradesList) {
+    const row = document.createElement('div');
+    row.setAttribute('role', 'row');
+    row.innerHTML = `
+      <span role="cell">${g.course} (${g.code})</span>
+      <span role="cell">${g.section} — ${g.semester}</span>
+      <span role="cell">${g.score} / 20</span>
+    `;
+    table.appendChild(row);
+  }
+}
+
 export function setLoginError(msg) {
   $('login-error').textContent = msg;
 }
