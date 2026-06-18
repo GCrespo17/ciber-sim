@@ -4,14 +4,14 @@ body {
   max-width: 720px;
   margin: 0 auto;
   padding: 2rem;
-  color: #1a1a1a;
-  background: #fafafa;
+  color: var(--color-text);
+  background: var(--color-bg);
 }
 
 h1 {
-  color: #c0392b;
+  color: var(--color-primary);
 }
 
 em {
-  color: #555;
+  color: var(--color-muted);
 }
