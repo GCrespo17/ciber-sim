@@ -269,6 +269,12 @@
   top: var(--space-3);
 }
 
+.sections-list {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-3);
+}
+
 .section-btn {
   display: grid;
   grid-template-columns: auto 1fr;
@@ -289,6 +295,11 @@
 .section-btn span {
   color: var(--muted);
   font-size: 0.82rem;
+}
+
+.section-btn.active {
+  border-color: var(--teal);
+  background: rgb(44 183 167 / 8%);
 }
 
 .teacher-main-card {
