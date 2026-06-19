@@ -59,6 +59,7 @@ export function showView(name) {
 export function showLogin() {
   hideAll();
   shell.classList.add('logged-out');
+  shell.classList.remove('teacher-session');
   rail.hidden = true;
   topbar.hidden = true;
   screens.login.hidden = false;
@@ -67,6 +68,7 @@ export function showLogin() {
 export function showPanel(user) {
   hideAll();
   shell.classList.remove('logged-out');
+  shell.classList.remove('teacher-session');
   rail.hidden = false;
   topbar.hidden = false;
   if (user.role === 'student') {
@@ -77,7 +79,9 @@ export function showPanel(user) {
     screens.student.hidden = false;
     showView('home');
   } else if (user.role === 'teacher') {
+    shell.classList.add('teacher-session');
     rail.hidden = true;
+    topbar.hidden = true;
     $('teacher-name').textContent = user.name;
     screens.teacher.hidden = false;
   }

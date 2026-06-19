@@ -55,6 +55,25 @@ a {
   grid-template-columns: 1fr;
 }
 
+.portal-shell.teacher-session {
+  grid-template-columns: 1fr;
+}
+
+.portal-shell.teacher-session .portal-main,
+.portal-shell:not(.logged-out):has(#teacher-panel:not([hidden])) .portal-main {
+  width: min(100%, 76rem);
+  max-width: 100%;
+  grid-column: 1 / -1;
+}
+
+.portal-shell:not(.logged-out):has(#teacher-panel:not([hidden])) {
+  grid-template-columns: 1fr;
+}
+
+.portal-shell:has(#teacher-panel:not([hidden])) .portal-topbar {
+  display: none !important;
+}
+
 .portal-rail {
   display: flex;
   flex-direction: column;

@@ -257,11 +257,26 @@
 }
 
 /* ── Teacher Panel ── */
+.teacher-dashboard {
+  width: 100%;
+}
+
 .teacher-layout {
   display: grid;
-  grid-template-columns: 18rem 1fr;
+  grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
   gap: var(--space-3);
   align-items: start;
+}
+
+.teacher-layout > * {
+  min-width: 0;
+}
+
+.teacher-sidebar .card h3 {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--muted);
 }
 
 .teacher-sidebar .card {
@@ -271,19 +286,25 @@
 
 .sections-list {
   display: grid;
-  gap: var(--space-1);
+  gap: var(--space-2);
   margin-top: var(--space-3);
 }
 
 .section-btn {
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: var(--space-2);
-  align-items: center;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  align-items: start;
   width: 100%;
   margin-top: 0;
   padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
   text-align: left;
+}
+
+.section-btn strong,
+.section-btn span {
+  display: block;
 }
 
 .section-btn strong {
@@ -295,6 +316,7 @@
 .section-btn span {
   color: var(--muted);
   font-size: 0.82rem;
+  line-height: 1.35;
 }
 
 .section-btn.active {
@@ -306,6 +328,10 @@
   min-height: 24rem;
 }
 
+#students-heading {
+  margin-top: var(--space-1);
+}
+
 .students-table {
   display: grid;
   gap: var(--space-2);
@@ -314,12 +340,13 @@
 
 .student-row {
   display: grid;
-  grid-template-columns: 12rem 1fr auto;
-  gap: var(--space-2);
+  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-3);
   align-items: center;
-  padding: var(--space-2) var(--space-3);
+  padding: var(--space-3);
   border: 1px solid var(--line);
   border-radius: var(--radius-md);
+  background: rgb(255 254 249 / 64%);
 }
 
 .student-row__name .card-kicker {
@@ -327,6 +354,7 @@
 }
 
 .student-name {
+  margin: 0;
   font-weight: 700;
   font-size: 1rem;
 }
@@ -335,6 +363,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
+  align-items: center;
 }
 
 .grade-badge {
@@ -371,6 +400,10 @@
   margin-top: var(--space-3);
 }
 
+.grade-form__grid label {
+  margin-top: 0;
+}
+
 .grade-form__grid label:first-child {
   grid-column: 1 / -1;
 }
@@ -398,6 +431,11 @@
 .grade-form__actions {
   display: flex;
   gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.grade-form__actions button {
+  margin-top: 0;
 }
 
 .grade-form__actions button:first-child {
@@ -406,6 +444,7 @@
 
 .student-row__actions button {
   margin-top: 0;
+  white-space: nowrap;
 }
 
 @media (max-width: 900px) {
