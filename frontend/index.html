@@ -195,16 +195,37 @@
           <div>
             <p class="eyebrow">Portal docente</p>
             <h2>Panel de profesor</h2>
-            <p>Bienvenido, <span id="teacher-name"></span>. Las herramientas de gestión académica se añadirán en una fase posterior.</p>
+            <p>Bienvenido, <span id="teacher-name"></span>. Gestiona las calificaciones de tus secciones.</p>
           </div>
           <button id="logout-btn-teacher" class="button-secondary">Cerrar sesión</button>
         </header>
 
-        <article class="card wide-card">
-          <p class="card-kicker">Estado</p>
-          <h3>Panel reservado</h3>
-          <p>Las secciones y cursos asignados al profesor aparecerán cuando estén disponibles.</p>
-        </article>
+        <div class="teacher-layout">
+          <aside class="teacher-sidebar">
+            <article class="card">
+              <p class="card-kicker">Mis secciones</p>
+              <h3 id="sections-heading">Cargando…</h3>
+              <div id="sections-list" class="sections-list"></div>
+            </article>
+          </aside>
+
+          <article class="card teacher-main-card">
+            <div id="students-placeholder">
+              <p class="card-kicker">Estudiantes</p>
+              <h3>Selecciona una sección</h3>
+              <div class="empty-state">
+                <p>Elige una sección de la lista para ver los estudiantes inscritos y gestionar sus calificaciones.</p>
+              </div>
+            </div>
+            <div id="students-content" hidden>
+              <p class="card-kicker">Estudiantes</p>
+              <h3 id="section-label"></h3>
+              <p id="students-heading" class="muted-text"></p>
+              <div id="students-table" class="students-table"></div>
+            </div>
+            <div id="grade-form-area" class="grade-form-area" hidden></div>
+          </article>
+        </div>
       </section>
     </main>
   </div>

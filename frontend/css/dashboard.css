@@ -255,3 +255,200 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ── Teacher Panel ── */
+.teacher-dashboard {
+  width: 100%;
+}
+
+.teacher-layout {
+  display: grid;
+  grid-template-columns: minmax(16rem, 18rem) minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: start;
+}
+
+.teacher-layout > * {
+  min-width: 0;
+}
+
+.teacher-sidebar .card h3 {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.teacher-sidebar .card {
+  position: sticky;
+  top: var(--space-3);
+}
+
+.sections-list {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.section-btn {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  align-items: start;
+  width: 100%;
+  margin-top: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  text-align: left;
+}
+
+.section-btn strong,
+.section-btn span {
+  display: block;
+}
+
+.section-btn strong {
+  font-family: var(--font-data);
+  color: var(--teal);
+  font-size: 0.82rem;
+}
+
+.section-btn span {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.section-btn.active {
+  border-color: var(--teal);
+  background: rgb(44 183 167 / 8%);
+}
+
+.teacher-main-card {
+  min-height: 24rem;
+}
+
+#students-heading {
+  margin-top: var(--space-1);
+}
+
+.students-table {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.student-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 12rem) minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-3);
+  align-items: center;
+  padding: var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgb(255 254 249 / 64%);
+}
+
+.student-row__name .card-kicker {
+  margin-bottom: var(--space-1);
+}
+
+.student-name {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.student-row__grades {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  align-items: center;
+}
+
+.grade-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 0.76rem;
+  background: #fffef9;
+}
+
+.grade-badge strong {
+  color: var(--teal);
+}
+
+.muted-text {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.grade-form-area {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius-md);
+  background: rgb(255 254 249 / 60%);
+}
+
+.grade-form__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2) var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.grade-form__grid label {
+  margin-top: 0;
+}
+
+.grade-form__grid label:first-child {
+  grid-column: 1 / -1;
+}
+
+.grade-form__grid select {
+  display: block;
+  width: 100%;
+  margin-top: var(--space-1);
+  padding: 0.85rem 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  background: #fffef9;
+  font-size: inherit;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 160ms ease;
+}
+
+.grade-form__grid select:focus-visible {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 0.22rem rgb(44 183 167 / 18%);
+}
+
+.grade-form__actions {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.grade-form__actions button {
+  margin-top: 0;
+}
+
+.grade-form__actions button:first-child {
+  flex: 1;
+}
+
+.student-row__actions button {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .teacher-layout { grid-template-columns: 1fr; }
+  .student-row { grid-template-columns: 1fr; }
+  .grade-form__grid { grid-template-columns: 1fr; }
+}

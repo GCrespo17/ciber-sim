@@ -32,3 +32,39 @@ export async function getGrades(userId) {
   }
   return data;
 }
+
+export async function getSections() {
+  const res = await fetch('/api/sections');
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to fetch sections.');
+  return data;
+}
+
+export async function getSectionStudents(sectionId) {
+  const res = await fetch(`/api/sections/${sectionId}/students`);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to fetch students.');
+  return data;
+}
+
+export async function createGrade(payload) {
+  const res = await fetch('/api/grades', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to create grade.');
+  return data;
+}
+
+export async function updateGrade(gradeId, payload) {
+  const res = await fetch(`/api/grades/${gradeId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Failed to update grade.');
+  return data;
+}

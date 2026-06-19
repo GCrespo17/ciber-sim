@@ -5,6 +5,8 @@ import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
+import sectionsRouter from './routes/sections.js';
+import gradesRouter from './routes/grades.js';
 import { logger } from './lib/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -26,6 +28,8 @@ app.use(express.static(frontendDir));
 
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/sections', sectionsRouter);
+app.use('/api/grades', gradesRouter);
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));
