@@ -21,4 +21,59 @@ async function findGradesByUserId(userId: string): Promise<any[]> {
   return result.rows;
 }
 
-export { findGradesByUserId };
+async function createGrade(data: {
+  enrollment_id: number;
+  evaluation_type: string;
+  score: number;
+  weight: number;
+  period: string;
+  observation?: string;
+}): Promise<any> {
+  const result = await pool.query(
+    `INSERT INTO grades (enrollment_id, evaluation_type, score, weight, period, observation)
+     VALUES ($1, $2, $3, $4, $5, $6)
+     RETURNING *`,
+    [
+      data.enrollment_id,
+      data.evaluation_type,
+      data.score,
+      data.weight,
+      data.period,
+      data.observation ?? null,
+    ]
+  );
+  return result.rows[0];
+}
+
+async function updateGrade(
+  gradeId: number,
+  data: {
+    evaluation_type?: string;
+    score?: number;
+    weight?: number;
+    period?: string;
+    observation?: string;
+  }
+): Promise<any | null> {
+  const result = await pool.query(
+    `UPDATE grades
+     SET evaluation_type = COALESCE($1, evaluation_type),
+         score           = COALESCE($2, score),
+         weight          = COALESCE($3, weight),
+         period          = COALESCE($4, period),
+         observation     = COALESCE($5, observation)
+     WHERE id = $6
+     RETURNING *`,
+    [
+      data.evaluation_type ?? null,
+      data.score ?? null,
+      data.weight ?? null,
+      data.period ?? null,
+      data.observation ?? null,
+      gradeId,
+    ]
+  );
+  return result.rows[0] ?? null;
+}
+
+export { findGradesByUserId, createGrade, updateGrade };
