@@ -35,6 +35,15 @@ app.get('*', (_req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));
 });
 
+// SEGURO [A10:2025]: handler centralizado de errores. Cualquier error que llegue
+// hasta aquí se registra completo en el log del servidor, pero al cliente solo se
+// le devuelve un mensaje genérico, sin message/detail/query ni stack trace de
+// PostgreSQL o Node. Es la red de seguridad que evita fugas de información interna.
+app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  logger.error('unhandled.error', { message: err.message });
+  res.status(500).json({ error: 'Internal server error.' });
+});
+
 app.listen(PORT, () => {
   logger.info('server.startup', { port: PORT, frontendDir });
 });
