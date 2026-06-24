@@ -42,23 +42,34 @@ async function grades(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // VULNERABLE [A01:2025]: session is validated but we never verify that
-  // sessionUser.id matches req.params.id. Any authenticated user can request
-  // any other user's grades by changing the :id in the URL (IDOR).
+  // SEGURO [A10/SQLi]: validamos que el id sea un entero positivo antes de usarlo.
+  // Esto evita que valores no numéricos lleguen a la base de datos y provoquen
+  // errores de tipo que filtren información interna.
+  const requestedId = Number(req.params.id);
+  if (!Number.isInteger(requestedId) || requestedId <= 0) {
+    res.status(400).json({ error: 'Invalid user ID.' });
+    return;
+  }
+
+  // SEGURO [A01:2025/IDOR]: se verifica que el usuario autenticado solo pueda
+  // consultar SUS propias calificaciones. Cambiar el :id en la URL por el de otro
+  // usuario ahora responde 403 en lugar de devolver sus notas.
+  if (sessionUser.id !== requestedId) {
+    logger.warn('users.grades.forbidden', { requestedId, sessionUserId: sessionUser.id });
+    res.status(403).json({ error: 'Access denied.' });
+    return;
+  }
+
   try {
-    const gradesList = await findGradesByUserId(String(req.params.id));
-    logger.info('users.grades.served', { requestedId: req.params.id, sessionUserId: sessionUser.id });
+    const gradesList = await findGradesByUserId(requestedId);
+    logger.info('users.grades.served', { requestedId, sessionUserId: sessionUser.id });
     res.json(gradesList);
-  } catch (err: any) {
-    // VULNERABLE [A10:2025]: raw database error returned to client.
-    // Exposes PostgreSQL message, query fragment, table names and Node.js stack trace.
-    logger.error('users.grades.error', { requestedId: req.params.id });
-    res.status(500).json({
-      error: err.message,
-      detail: err.detail,
-      query: err.query,
-      stack: err.stack,
-    });
+  } catch (err) {
+    // SEGURO [A10:2025]: el detalle del error se registra solo en el log del servidor.
+    // Al cliente se le devuelve un mensaje genérico, sin message/detail/query/stack
+    // de PostgreSQL, evitando la fuga de información interna.
+    logger.error('users.grades.error', { requestedId });
+    res.status(500).json({ error: 'Internal server error.' });
   }
 }
 
