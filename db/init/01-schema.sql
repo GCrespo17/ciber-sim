@@ -1,5 +1,6 @@
--- Vulnerable Phase 1 schema: users and sessions for HU-01
--- Plaintext passwords are a deliberate vulnerable-phase choice.
+-- Schema: users and sessions for HU-01
+-- SEGURO [A02:2025]: la columna password almacena un hash bcrypt, no texto plano.
+-- El hashing y la verificacion se hacen en el backend (services/auth.ts).
 CREATE TABLE IF NOT EXISTS users (
   id    SERIAL PRIMARY KEY,
   name  TEXT NOT NULL,
