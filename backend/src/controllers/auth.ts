@@ -26,8 +26,14 @@ async function login(req: Request, res: Response): Promise<void> {
   const token = await createSession(user.id);
   logger.info('login.success', { userId: user.id, role: user.role });
 
+  // SEGURO [A05:2025]: cookie de sesión endurecida con flags básicos.
+  // - httpOnly: true  -> el token deja de ser legible por JavaScript, mitigando
+  //   el robo de sesión vía XSS (antes estaba en false).
+  // - secure          -> en producción solo viaja por HTTPS.
+  // - sameSite: lax   -> reduce el riesgo de CSRF en peticiones cross-site.
   res.cookie(SESSION_COOKIE, token, {
-    httpOnly: false,
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
   });

@@ -52,6 +52,15 @@ async function students(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  // SEGURO [A01:2025/IDOR]: no basta con ser profesor; se verifica que la sección
+  // pertenezca al profesor autenticado. Un profesor que cambie el :id por el de
+  // una sección ajena ahora recibe 403 en vez de ver estudiantes de otro docente.
+  if (section.teacher_id !== sessionUser.id) {
+    logger.warn('sections.students.forbidden', { sectionId, teacherId: sessionUser.id });
+    res.status(403).json({ error: 'Access denied.' });
+    return;
+  }
+
   const studentList = await findStudentsBySection(sectionId);
   logger.info('sections.students.served', { sectionId, teacherId: sessionUser.id });
   res.json({ section, students: studentList });
