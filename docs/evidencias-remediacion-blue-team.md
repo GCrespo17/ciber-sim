@@ -130,6 +130,34 @@ Sin sesión                   -> 401 :: {"error":"Authentication required."}
 
 ---
 
+## 6.1. Retest A01:2025 — Broken Access Control (IDOR en perfil)
+
+Segunda superficie de IDOR listada en el anteproyecto (`/api/perfil/:id`). El endpoint
+de perfil validaba el tipo del `:id` pero **no verificaba propiedad**, por lo que un
+estudiante autenticado podía leer el perfil (id, nombre, rol) de cualquier otro usuario.
+
+**Payload:** logueado como `student1` (id 1), solicitar `GET /api/users/2/profile`
+
+| | Versión vulnerable (esperado) | Versión segura (verificado) |
+| --- | --- | --- |
+| Código HTTP | 200 | **403** |
+| Cuerpo | perfil del usuario 2 (Luis Martínez) | `{"error":"Access denied."}` |
+
+Resultados verificados en `version-asegurada`:
+
+```txt
+Login student1               -> 200 :: {"id":1,"name":"Ana García","role":"student"}
+GET /api/users/1/profile     -> 200 :: {"id":1,"name":"Ana García","role":"student"}
+GET /api/users/2/profile     -> 403 :: {"error":"Access denied."}
+```
+
+**Control aplicado:** verificación de propiedad en el servicio de perfil — se compara
+`sessionUser.id` con el `profileId` solicitado antes de devolver datos (`services/profile.ts`).
+
+✅ El perfil de otros usuarios ya no es accesible cambiando el ID en la URL.
+
+---
+
 ## 7. Retest A01:2025 — Broken Access Control (IDOR docente)
 
 Vulnerabilidad adicional detectada y remediada por el Blue Team: un profesor podía
@@ -219,7 +247,8 @@ session_token=<token>; Path=/; HttpOnly; SameSite=Lax
 | Hallazgo | OWASP | Técnicas MITRE (aprox.) | Resultado seguro |
 | --- | --- | --- | --- |
 | Error leak | A10 — Mishandling of Exceptional Conditions | T1595.002, T1071.001 | 400 genérico, sin detalles |
-| IDOR estudiante | A01 — Broken Access Control | T1078, T1213, T1565 | 403 genérico |
+| IDOR estudiante (calificaciones) | A01 — Broken Access Control | T1078, T1213, T1565 | 403 genérico |
+| IDOR estudiante (perfil) | A01 — Broken Access Control | T1078, T1213 | 403 genérico |
 | IDOR docente | A01 — Broken Access Control | T1078, T1213 | 403 genérico |
 | Contraseñas planas | A02 — Cryptographic Failures | T1552.001 | hash bcrypt |
 | Cookie débil | A05 — Security Misconfiguration | T1539 | HttpOnly + SameSite |
@@ -231,6 +260,7 @@ session_token=<token>; Path=/; HttpOnly; SameSite=Lax
 | Debilidad vulnerable | Control en versión segura | Validación | Estado |
 | --- | --- | --- | --- |
 | Calificaciones por ID sin validar propiedad | Autorización server-side (estudiante y profesor) | 403 genérico | ✅ |
+| Perfil por ID sin validar propiedad | Autorización server-side en el servicio de perfil | 403 genérico | ✅ |
 | ID no numérico llega a la consulta | Validación de parámetros antes de DB | 400 genérico | ✅ |
 | SQL por concatenación | Consulta parametrizada | payload no altera SQL | ✅ |
 | Errores técnicos al cliente | Handler centralizado + logging interno | sin stack trace | ✅ |
