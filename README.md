@@ -2,12 +2,12 @@
 
 Bienvenido al repositorio oficial de **ciber-sim**, una simulación estructurada de ataque informático y remediación técnica sobre un portal académico de gestión de calificaciones. 
 
-⚠️ **AVISO IMPORTANTE DE NAVEGACIÓN:**
+ **AVISO IMPORTANTE DE NAVEGACIÓN:**
 Esta rama (`main`) funciona exclusivamente como el **índice y la presentación técnica** del proyecto. El código fuente de la aplicación y las implementaciones de seguridad **no se encuentran aquí**. Para acceder el proyecto, por favor navegue hacia las ramas principales de desarrollo técnico que se detallan a continuación.
 
 ---
 
-## 📂 Estructura de Ramas (Branching Strategy)
+##  Estructura de Ramas (Branching Strategy)
 
 El flujo de trabajo del repositorio refleja la división de labores entre el equipo ofensivo y defensivo, separados en dos entornos de código aislados:
 
@@ -17,7 +17,7 @@ El flujo de trabajo del repositorio refleja la división de labores entre el equ
 
 ---
 
-## 🎯 Objetivo y Enfoque Técnico
+##  Objetivo y Enfoque Técnico
 
 A diferencia de los enfoques tradicionales que delegan la seguridad a librerías automatizadas, este proyecto adopta una metodología de programación de vulnerabilidades mediante lógica manual y *vulnerability chaining* (concatenación de vulnerabilidades).
 
@@ -27,7 +27,7 @@ El escenario práctico se centra en la explotación secuencial de dos riesgos cr
 
 ---
 
-## 🛠️ Arquitectura y Stack Tecnológico
+##  Arquitectura y Stack Tecnológico
 
 La aplicación es un portal web de tres capas diseñado bajo los siguientes cimientos tecnológicos:
 
@@ -40,7 +40,7 @@ La aplicación es un portal web de tres capas diseñado bajo los siguientes cimi
 
 ---
 
-## 📋 Metodología Aplicada
+##  Metodología Aplicada
 
 El modelado de amenazas, la recolección de inteligencia y la ejecución del ataque se han mapeado estrictamente utilizando el marco de trabajo **MITRE ATT&CK®**. 
 
@@ -51,7 +51,7 @@ Las técnicas exploradas incluyen:
 
 ---
 
-## 👥 Organización del Equipo
+##  Organización del Equipo
 
 El desarrollo, simulación y remediación fue ejecutado por los siguientes integrantes, divididos en roles operativos:
 
