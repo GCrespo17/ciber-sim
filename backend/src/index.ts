@@ -8,6 +8,7 @@ import usersRouter from './routes/users.js';
 import sectionsRouter from './routes/sections.js';
 import gradesRouter from './routes/grades.js';
 import { logger } from './lib/logger.js';
+import { pool } from './db.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -30,6 +31,16 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/sections', sectionsRouter);
 app.use('/api/grades', gradesRouter);
+
+app.get('/api/health', async (_req, res) => {
+  try {
+    await pool.query('SELECT 1');
+    res.json({ status: 'ok', uptime: process.uptime() });
+  } catch (err) {
+    logger.error('health.db_error', { error: String(err) });
+    res.status(503).json({ status: 'degraded', error: 'database' });
+  }
+});
 
 app.get('*', (_req, res) => {
   res.sendFile(path.join(frontendDir, 'index.html'));

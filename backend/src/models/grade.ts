@@ -30,7 +30,7 @@ async function createGrade(data: {
   enrollment_id: number;
   evaluation_type: string;
   score: number;
-  weight: number;S
+  weight: number;
   period: string;
   observation?: string;
 }): Promise<any> {
