@@ -20,6 +20,12 @@ async function create(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  if (!sessionUser.id || typeof sessionUser.id !== 'number') {
+    logger.error('grades.create.corrupted_session', { sessionUserId: sessionUser.id });
+    res.status(500).json({ error: 'Internal server error.' });
+    return;
+  }
+
   const { enrollment_id, evaluation_type, score, weight, period, observation } = req.body;
 
   if (!enrollment_id || !evaluation_type || score === undefined || !weight || !period) {
@@ -27,10 +33,29 @@ async function create(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // SEGURO [A01:2025/IDOR]: se verifica que la inscripción pertenezca a una sección
-  // del profesor autenticado. Sin esto, un profesor podría registrar notas a
-  // estudiantes de secciones de otro docente enviando un enrollment_id ajeno.
-  const ownerTeacherId = await findTeacherIdByEnrollment(Number(enrollment_id));
+  const numericEnrollment = Number(enrollment_id);
+  if (!Number.isInteger(numericEnrollment) || numericEnrollment <= 0) {
+    res.status(400).json({ error: 'Invalid enrollment ID.' });
+    return;
+  }
+  if (Object.is(numericEnrollment, -0)) {
+    res.status(400).json({ error: 'Invalid enrollment ID.' });
+    return;
+  }
+
+  const numericScore = Number(score);
+  if (isNaN(numericScore) || numericScore < 0 || numericScore > 100) {
+    res.status(400).json({ error: 'Score must be between 0 and 100.' });
+    return;
+  }
+
+  const numericWeight = Number(weight);
+  if (isNaN(numericWeight) || numericWeight < 1 || numericWeight > 100) {
+    res.status(400).json({ error: 'Weight must be between 1 and 100.' });
+    return;
+  }
+
+  const ownerTeacherId = await findTeacherIdByEnrollment(numericEnrollment);
   if (ownerTeacherId === null) {
     res.status(404).json({ error: 'Enrollment not found.' });
     return;
@@ -42,10 +67,10 @@ async function create(req: Request, res: Response): Promise<void> {
   }
 
   const grade = await createGrade({
-    enrollment_id,
+    enrollment_id: numericEnrollment,
     evaluation_type,
-    score,
-    weight,
+    score: numericScore,
+    weight: numericWeight,
     period,
     observation,
   });
@@ -69,14 +94,22 @@ async function update(req: Request, res: Response): Promise<void> {
     return;
   }
 
+  if (!sessionUser.id || typeof sessionUser.id !== 'number') {
+    logger.error('grades.update.corrupted_session', { sessionUserId: sessionUser.id });
+    res.status(500).json({ error: 'Internal server error.' });
+    return;
+  }
+
   const gradeId = Number(req.params.id);
   if (!Number.isInteger(gradeId) || gradeId <= 0) {
     res.status(400).json({ error: 'Invalid grade ID.' });
     return;
   }
+  if (Object.is(gradeId, -0)) {
+    res.status(400).json({ error: 'Invalid grade ID.' });
+    return;
+  }
 
-  // SEGURO [A01:2025/IDOR]: se verifica que la calificación pertenezca a una sección
-  // del profesor autenticado antes de permitir su edición.
   const ownerTeacherId = await findTeacherIdByGrade(gradeId);
   if (ownerTeacherId === null) {
     res.status(404).json({ error: 'Grade not found.' });
@@ -89,6 +122,22 @@ async function update(req: Request, res: Response): Promise<void> {
   }
 
   const { evaluation_type, score, weight, period, observation } = req.body;
+
+  if (score !== undefined) {
+    const numericScore = Number(score);
+    if (isNaN(numericScore) || numericScore < 0 || numericScore > 100) {
+      res.status(400).json({ error: 'Score must be between 0 and 100.' });
+      return;
+    }
+  }
+  if (weight !== undefined) {
+    const numericWeight = Number(weight);
+    if (isNaN(numericWeight) || numericWeight < 1 || numericWeight > 100) {
+      res.status(400).json({ error: 'Weight must be between 1 and 100.' });
+      return;
+    }
+  }
+
   const updated = await updateGrade(gradeId, { evaluation_type, score, weight, period, observation });
 
   if (!updated) {

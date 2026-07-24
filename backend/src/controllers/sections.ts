@@ -41,8 +41,20 @@ async function students(req: Request, res: Response): Promise<void> {
   }
 
   const sectionId = Number(req.params.id);
+
   if (!Number.isInteger(sectionId) || sectionId <= 0) {
     res.status(400).json({ error: 'Invalid section ID.' });
+    return;
+  }
+
+  if (Object.is(sectionId, -0)) {
+    res.status(400).json({ error: 'Invalid section ID.' });
+    return;
+  }
+
+  if (!sessionUser.id || typeof sessionUser.id !== 'number') {
+    logger.error('sections.students.corrupted_session', { sessionUserId: sessionUser.id });
+    res.status(500).json({ error: 'Internal server error.' });
     return;
   }
 
@@ -52,9 +64,6 @@ async function students(req: Request, res: Response): Promise<void> {
     return;
   }
 
-  // SEGURO [A01:2025/IDOR]: no basta con ser profesor; se verifica que la sección
-  // pertenezca al profesor autenticado. Un profesor que cambie el :id por el de
-  // una sección ajena ahora recibe 403 en vez de ver estudiantes de otro docente.
   if (section.teacher_id !== sessionUser.id) {
     logger.warn('sections.students.forbidden', { sectionId, teacherId: sessionUser.id });
     res.status(403).json({ error: 'Access denied.' });
